@@ -6,7 +6,8 @@ import mobbinMark from '../assets/mobbin-mark.png'
 // Brand marks come from simple-icons (CC0) and, for ChatGPT, the OpenAI mark
 // from @lobehub/icons-static-svg (MIT), which simple-icons no longer carries.
 // Neither package has Mobbin; its mark is the supplied PNG, used as a mask so
-// it takes the same colour as the other marks. The subtitle is draft copy.
+// it takes the same colour as the other marks. Every mark is the muted
+// --tool-purple at rest and lifts to --primary-soft on hover or focus. The subtitle is draft copy.
 const OPENAI = openaiSvg.match(/ d="([^"]+)"/)![1]
 
 interface Tool {
@@ -29,7 +30,7 @@ const TOOLS: Record<string, Tool> = {
 const NAMES = ['Claude', 'Figma', 'ChatGPT', 'GitHub', 'Jira', 'Notion', 'Mobbin']
 
 // Muted until hovered or focused, when the logo turns the primary colour.
-const MARK = 'h-7 opacity-55 transition-[opacity,fill,color,border-color,background-color] duration-200 ease-design group-hover:opacity-100 group-focus-visible:opacity-100 motion-reduce:transition-none tablet:h-9'
+const MARK = 'h-7 transition-[fill,color,border-color,background-color] duration-200 ease-design motion-reduce:transition-none tablet:h-9'
 
 // Each mark's view box is cropped to its own outline, so every logo renders at
 // the same height regardless of the padding in its source artwork. Measured
@@ -48,7 +49,7 @@ function Mark({ tool }: { tool: Tool }) {
   }, [tool.name])
 
   return (
-    <svg role="img" aria-label={tool.name} viewBox={viewBox} className={`${MARK} w-auto max-w-16 fill-paper group-hover:fill-primary-soft`}>
+    <svg role="img" aria-label={tool.name} viewBox={viewBox} className={`${MARK} w-auto max-w-16 fill-current text-tool-purple group-hover:text-primary-soft group-focus-visible:text-primary-soft`}>
       <path ref={pathRef} d={tool.path} fillRule={tool.evenOdd ? 'evenodd' : undefined} />
     </svg>
   )
@@ -64,7 +65,7 @@ function MaskMark({ tool }: { tool: Tool }) {
     <span
       role="img"
       aria-label={tool.name}
-      className={`${MARK} block max-w-10 bg-paper group-hover:bg-primary-soft tablet:max-w-[50px]`}
+      className={`${MARK} block max-w-10 bg-tool-purple group-hover:bg-primary-soft group-focus-visible:bg-primary-soft tablet:max-w-[50px]`}
       style={{
         aspectRatio: ratio,
         mask: `url(${src}) center / contain no-repeat`,

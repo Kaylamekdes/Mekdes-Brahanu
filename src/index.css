@@ -83,6 +83,7 @@
   --color-primary-soft: var(--primary-soft);
   --color-primary-tint: var(--primary-tint);
   --color-primary-line: var(--primary-line);
+  --color-tool-purple: var(--tool-purple);
   --shadow-hairline-primary: 0 0 0 1px var(--primary-line);
 }
 
@@ -97,6 +98,7 @@
   --primary-soft: #a78bfa; /* text, links, small labels on dark */
   --primary-tint: rgba(139, 92, 246, 0.12); /* subtle surfaces */
   --primary-line: rgba(139, 92, 246, 0.28); /* borders, rules */
+  --tool-purple: #8e7cc3; /* the tool logos: one muted purple, so they read as a set */
 }
 
 @media (width >= 701px) {
