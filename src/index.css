@@ -1,0 +1,627 @@
+@import "tailwindcss";
+
+/* Tokens from the portfolio handoff (docs/02-design-tokens.md).
+   Spacing s-1..s-10 (4..128px) is Tailwind's default 4px step scale:
+   s-1 = 1, s-2 = 2, s-3 = 3, s-4 = 4, s-5 = 6, s-6 = 8, s-7 = 12, s-8 = 16, s-9 = 24, s-10 = 32. */
+@theme {
+  /* Colour roles, mapped to the dark theme (handoff light values in comments) */
+  --color-ground: #0a0a0a;                    /* page; was #EDEDEB */
+  --color-surface: #121115;                   /* cards, testimonials: near-black, a hint of purple; was #F7F7F5 */
+  --color-band: #0e0d11;                      /* the Approach band and case study next-project band */
+  --color-frame: #19181c;                     /* image wells, empty frames; was #E2E3E0 */
+  --color-ink: #0e0f0f;                       /* text on paper buttons (unchanged) */
+  --color-muted: #a9abac;                     /* secondary text, 8:1 on surface; was #5A5D5F */
+  --color-line: rgba(255, 255, 255, 0.08);    /* card borders, hairlines; was ink at 14% */
+  --color-paper: #ededeb;                     /* primary text, light buttons */
+  --color-paper-muted: #a9abac;
+  --color-paper-line: rgba(237, 237, 235, 0.22);
+  /* The Contact band: a cream surface with dark text */
+  --color-cream: #f5f1e8;
+  --color-cream-ink: #14110f;                 /* 17:1 on cream */
+  --color-cream-muted: rgba(20, 17, 15, 0.72); /* secondary text on cream */
+  --color-cream-line: rgba(20, 17, 15, 0.25);  /* the email button's border */
+
+  /* Type */
+  --font-display: 'Newsreader', Georgia, 'Times New Roman', serif;
+  --font-ui: 'Instrument Sans', system-ui, sans-serif;
+  --font-mono: 'DM Mono', ui-monospace, Menlo, monospace;
+
+  /* Type scale (size, line height, tracking) */
+  --text-section: 56px;
+  --text-section--line-height: 1.05;
+  --text-section--letter-spacing: -0.02em;
+  --text-section-sm: 36px;
+  --text-section-sm--line-height: 1.05;
+  --text-section-sm--letter-spacing: -0.02em;
+  --text-lead-title: 44px;
+  --text-lead-title--line-height: 1.05;
+  --text-lead-title--letter-spacing: -0.02em;
+  --text-card-title: 36px;
+  --text-card-title--line-height: 1.08;
+  --text-card-title--letter-spacing: -0.015em;
+  --text-lead: 18px;
+  --text-lead--line-height: 1.5;
+  --text-body: 17px;
+  --text-body--line-height: 1.5;
+  --text-label: 12px;
+  --text-label--letter-spacing: 0.04em;
+  --text-label-sm: 11px;
+  --text-label-sm--letter-spacing: 0.04em;
+
+  /* Layout */
+  --spacing-gutter: 48px;
+  --spacing-gutter-sm: 20px;
+  --spacing-section: 128px;
+  --spacing-section-sm: 80px;
+  --container-content: 1200px;
+  --container-wide: 1344px;
+  --container-narrow: 760px;
+
+  /* Radius */
+  --radius-panel: 10px;
+  --radius-frame: 12px;
+  --radius-phone: 24px;
+  --radius-card: 20px;
+
+  /* Shadows */
+  --shadow-hairline: 0 0 0 1px rgba(255, 255, 255, 0.08);
+  --shadow-card: 0 -8px 24px -12px rgba(0, 0, 0, 0.6), 0 32px 64px -32px rgba(0, 0, 0, 0.8);
+  --shadow-panel: 0 0 0 1px rgba(14, 15, 15, 0.12), 0 32px 60px -24px rgba(14, 15, 15, 0.45);
+
+  /* Breakpoints: the design changes at <=700px and <=1099px */
+  --breakpoint-tablet: 701px;
+  --breakpoint-wide: 1100px;
+
+  /* Motion */
+  --ease-design: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --ease-reveal: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* Primary utilities (bg-primary-strong, text-primary-soft...), from :root */
+  --color-primary: var(--primary);
+  --color-primary-strong: var(--primary-strong);
+  --color-primary-strong-hover: var(--primary-strong-hover);
+  --color-primary-soft: var(--primary-soft);
+  --color-primary-tint: var(--primary-tint);
+  --color-primary-line: var(--primary-line);
+  --shadow-hairline-primary: 0 0 0 1px var(--primary-line);
+}
+
+/* One space between every pair of adjacent sections */
+:root {
+  --section-space: 96px;
+  /* Primary colour, an accent only: filled buttons, the hero "why", section
+     numbers, focus rings, selection, the scroll cue, a few links and hovers */
+  --primary: #8b5cf6;
+  --primary-strong: #7c3aed; /* fills, with white text (5.7:1) */
+  --primary-strong-hover: #6d28d9; /* hover on those fills (7.1:1) */
+  --primary-soft: #a78bfa; /* text, links, small labels on dark */
+  --primary-tint: rgba(139, 92, 246, 0.12); /* subtle surfaces */
+  --primary-line: rgba(139, 92, 246, 0.28); /* borders, rules */
+}
+
+@media (width >= 701px) {
+  :root {
+    --section-space: 128px;
+  }
+}
+
+@media (width >= 1100px) {
+  :root {
+    --section-space: 160px;
+  }
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  background: #0a0a0a;
+}
+
+html {
+  scrollbar-color: rgba(255, 255, 255, 0.22) #0a0a0a;
+}
+
+::selection {
+  background: var(--primary-strong);
+  color: #fff;
+}
+
+body {
+  font-family: var(--font-ui);
+  -webkit-font-smoothing: antialiased;
+}
+
+.font-display {
+  font-optical-sizing: auto;
+}
+
+/* Links and buttons change colour over 200ms on hover. In the base layer, so
+   any element that sets its own transition keeps it. */
+@layer base {
+  a,
+  button {
+    transition-property: color, background-color, border-color, text-decoration-color, opacity;
+    transition-duration: 200ms;
+    transition-timing-function: var(--ease-design);
+  }
+}
+
+/* Every interactive element: the primary focus ring. In the base layer so a
+   component's own radius (pill buttons) still applies while focused. */
+@layer base {
+  :focus-visible {
+    outline: 2px solid var(--primary-soft);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+}
+
+/* Scroll cue: a short segment travels down the thin line */
+@keyframes scroll-cue-travel {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(250%);
+  }
+}
+
+.scroll-cue-line::after {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  height: 40%;
+  background: var(--primary-soft);
+  animation: scroll-cue-travel 2.4s var(--ease-design) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-cue-line::after {
+    animation: none;
+  }
+}
+
+/* Stacking project cards. Every card is a direct child of .card-stack and
+   takes the same rule: same height, sticky, each pinned one step lower. */
+
+/* Registered as lengths so they compute to px, which the stacking script reads. */
+@property --strip-pad {
+  syntax: '<length>';
+  inherits: true;
+  initial-value: 64px;
+}
+
+@property --stack-step {
+  syntax: '<length>';
+  inherits: true;
+  initial-value: 84px;
+}
+
+.card-stack {
+  --stack-top: 88px; /* 72px nav + 16px breathing room; plain px so JS can read it */
+  /* The card's top padding, above its number and kind line: 64px on tall
+     screens, easing to 12px on short ones (64px from 900px tall, 12px at
+     660px and below), so the deck keeps stacking on laptop screens. */
+  --strip-pad: clamp(12px, calc(12px + (100svh - 660px) * 0.2167), 64px);
+  /* The pad + 12px line + 8px, so covered cards always show their line */
+  --stack-step: calc(var(--strip-pad) + 20px);
+  /* Covered cards that keep a visible strip; older ones tuck behind them */
+  --stack-depth: 2;
+  --stack-gap: 30svh; /* scroll room between one card docking and the next arriving */
+  /* Desktop: the screen height less the nav and the stack offset, at least
+     780px, but never taller than the space under the first docked card. */
+  --card-h: min(
+    max(780px, calc(100dvh - 72px - var(--stack-depth) * var(--stack-step))),
+    calc(100dvh - var(--stack-top) - 16px)
+  );
+  /* A flex gap rather than card margins: a sticky card's margin counts
+     toward where it releases, so margins made the deck release unevenly and
+     left a full gap of empty space under the last card. */
+  display: flex;
+  flex-direction: column;
+  row-gap: var(--stack-gap);
+}
+
+/* 1440px and wider: a fixed 88px above the card's number and kind line,
+   whatever the screen height. Covered cards then show only their rounded top
+   edge, one 24px step each, and the card is sized so the deepest docked card
+   still ends 16px above the bottom of the screen. */
+@media (width >= 1440px) {
+  .card-stack {
+    --strip-pad: 89px; /* the glyphs start 2px above the line box and the border adds 1px: the text begins 88px below the top edge */
+    --stack-step: 24px;
+    --card-h: calc(100dvh - var(--stack-top) - var(--stack-depth) * var(--stack-step) - 16px);
+  }
+}
+
+/* Below 900px the nav is one row with a menu button. dvh follows the mobile
+   browser bars, so the lowest card always ends inside the visible screen. */
+@media (width < 900px) {
+  .card-stack {
+    --card-h: calc(100dvh - var(--stack-top) - var(--stack-depth) * var(--stack-step) - 16px);
+  }
+
+  /* Image slot: 16:10 at full width, shrinking (still 16:10) to the height the
+     text and button leave, so a card never scrolls inside. */
+  .stack-frame-slot {
+    flex: 0 1 auto;
+    min-height: 0;
+    aspect-ratio: 16 / 10;
+    container-type: size;
+  }
+
+  .stack-frame-slot > * {
+    width: min(100cqw, 100cqh * 1.6);
+    margin-inline: auto;
+  }
+}
+
+/* Phones: cards are sized to the tallest card's content (--card-fit-h, measured
+   in SelectedWork.tsx), capped so the lowest card still ends on screen. */
+@media (width < 701px) {
+  .card-stack {
+    --strip-pad: 28px;
+    --stack-step: 48px;
+    --card-h: min(
+      var(--card-fit-h, 100dvh),
+      calc(100dvh - var(--stack-top) - var(--stack-depth) * var(--stack-step) - 16px)
+    );
+  }
+}
+
+.card-stack[data-flow='measure'] > .stack-card {
+  height: auto;
+}
+
+.card-stack > .stack-card {
+  position: sticky;
+  top: calc(var(--stack-top) + min(var(--stack-index), var(--stack-depth)) * var(--stack-step));
+  flex: none;
+  height: var(--card-h);
+}
+
+/* Sticky boxes only travel within the container's content box. This empty
+   item adds one more flex gap after the last card, so it holds for the same
+   scroll as every other card, then the whole deck releases and scrolls on. */
+.card-stack::after {
+  content: '';
+  height: 0;
+}
+
+/* Only while the deck is on screen (toggled in SelectedWork.tsx) */
+.card-stack.is-active > .stack-card {
+  will-change: transform, scale;
+}
+
+/* Scroll-driven version of the stacking (the script runs it where this isn't
+   supported). Card k's view timeline is --arrive-k; the script sets each
+   range to "from card k touching card k-1 to card k docking". The values
+   match COVERED_SCALE and COVERED_DIM in SelectedWork.tsx. With a depth of 2,
+   card 2 tucks away as card 4 arrives, card 3 as cards 4 and 5 arrive, and
+   card 4 as card 5 arrives. */
+@keyframes stack-cover {
+  to {
+    scale: 0.96;
+  }
+}
+
+@keyframes stack-dim {
+  to {
+    opacity: 0.35;
+  }
+}
+
+/* The scale property applies before transform, so a covered card (scale
+   0.96) needs the step divided by 0.96 to slide exactly one step. */
+@keyframes stack-tuck {
+  to {
+    transform: translateY(calc(-1 * var(--stack-step) / 0.96));
+  }
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .card-stack[data-flow='sticky'] {
+      timeline-scope: --arrive-1, --arrive-2, --arrive-3, --arrive-4;
+    }
+
+    .card-stack[data-flow='sticky'] > .stack-card:nth-child(2) { view-timeline-name: --arrive-1; }
+    .card-stack[data-flow='sticky'] > .stack-card:nth-child(3) { view-timeline-name: --arrive-2; }
+    .card-stack[data-flow='sticky'] > .stack-card:nth-child(4) { view-timeline-name: --arrive-3; }
+    .card-stack[data-flow='sticky'] > .stack-card:nth-child(5) { view-timeline-name: --arrive-4; }
+
+    .card-stack[data-flow='sticky'] > .stack-card,
+    .card-stack[data-flow='sticky'] > .stack-card [data-card-dim] {
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-duration: auto;
+    }
+
+    .card-stack[data-flow='sticky'] > .stack-card:nth-child(1) {
+      animation-name: stack-cover;
+      animation-timeline: --arrive-1;
+      animation-range: cover var(--arrive-1-start) cover var(--arrive-1-end);
+    }
+
+    .card-stack[data-flow='sticky'] > .stack-card:nth-child(2) {
+      animation-name: stack-cover, stack-tuck;
+      animation-timeline: --arrive-2, --arrive-3;
+      animation-range:
+        cover var(--arrive-2-start) cover var(--arrive-2-end),
+        cover var(--arrive-3-start) cover var(--arrive-3-end);
+    }
+
+    .card-stack[data-flow='sticky'] > .stack-card:nth-child(3) {
+      animation-name: stack-cover, stack-tuck, stack-tuck;
+      animation-timeline: --arrive-3, --arrive-3, --arrive-4;
+      animation-range:
+        cover var(--arrive-3-start) cover var(--arrive-3-end),
+        cover var(--arrive-3-start) cover var(--arrive-3-end),
+        cover var(--arrive-4-start) cover var(--arrive-4-end);
+      animation-composition: replace, replace, add;
+    }
+
+    .card-stack[data-flow='sticky'] > .stack-card:nth-child(4) {
+      animation-name: stack-cover, stack-tuck;
+      animation-timeline: --arrive-4, --arrive-4;
+      animation-range:
+        cover var(--arrive-4-start) cover var(--arrive-4-end),
+        cover var(--arrive-4-start) cover var(--arrive-4-end);
+    }
+
+    .card-stack[data-flow='sticky'] > .stack-card:nth-child(1) [data-card-dim] {
+      animation-name: stack-dim;
+      animation-timeline: --arrive-1;
+      animation-range: cover var(--arrive-1-start) cover var(--arrive-1-end);
+    }
+
+    .card-stack[data-flow='sticky'] > .stack-card:nth-child(2) [data-card-dim] {
+      animation-name: stack-dim;
+      animation-timeline: --arrive-2;
+      animation-range: cover var(--arrive-2-start) cover var(--arrive-2-end);
+    }
+
+    .card-stack[data-flow='sticky'] > .stack-card:nth-child(3) [data-card-dim] {
+      animation-name: stack-dim;
+      animation-timeline: --arrive-3;
+      animation-range: cover var(--arrive-3-start) cover var(--arrive-3-end);
+    }
+
+    .card-stack[data-flow='sticky'] > .stack-card:nth-child(4) [data-card-dim] {
+      animation-name: stack-dim;
+      animation-timeline: --arrive-4;
+      animation-range: cover var(--arrive-4-start) cover var(--arrive-4-end);
+    }
+  }
+}
+
+/* Screen too short for a card: the whole deck scrolls normally instead */
+.card-stack[data-flow='static'] > .stack-card {
+  position: relative;
+  top: auto;
+  height: auto;
+}
+
+.card-stack[data-flow='static']::after {
+  display: none;
+}
+
+/* Appear-on-scroll (useReveal.ts), the one reveal system for the whole site.
+   Every [data-reveal] element fades in while rising 24px, once, staggered
+   80ms within its group. Only hidden while the html element has the js class
+   (set by main.tsx, and taken off again if the reveal system hasn't started
+   within 1.5s), so content never stays hidden. Uses the individual translate
+   and scale properties, so it composes with any transform. Hover colour
+   changes keep their own 200ms timing and never wait for the stagger.
+   Variants:
+   - "fade": opacity only (the stacking cards' content, which the deck moves)
+   - "photo": fades in growing from 0.97 (the About portrait)
+   - "hero": fades in over 900ms while the image inside settles from 1.03
+   - "frame": rises in while the image inside settles from 1.04
+   With reduced motion it is a plain, short fade: no distance, no scaling. */
+.js [data-reveal] {
+  --reveal-duration: 600ms;
+  transition-property: opacity, translate, scale, color, background-color, border-color, text-decoration-color;
+  transition-duration: var(--reveal-duration), var(--reveal-duration), var(--reveal-duration), 200ms, 200ms, 200ms, 200ms;
+  transition-timing-function: var(--ease-reveal);
+  transition-delay: var(--reveal-delay, 0ms), var(--reveal-delay, 0ms), var(--reveal-delay, 0ms), 0ms, 0ms, 0ms, 0ms;
+}
+
+.js [data-reveal]:not([data-revealed]) {
+  opacity: 0;
+  translate: 0 24px;
+}
+
+.js [data-reveal='fade']:not([data-revealed]) {
+  translate: none;
+}
+
+.js [data-reveal='photo']:not([data-revealed]) {
+  translate: none;
+  scale: 0.97;
+}
+
+.js [data-reveal='hero'] {
+  --reveal-duration: 900ms;
+}
+
+.js [data-reveal='hero']:not([data-revealed]) {
+  translate: none;
+}
+
+/* The image inside a hero or frame; its frame clips the overscale */
+.js :is([data-reveal='hero'], [data-reveal='frame']) img {
+  transition: scale 900ms var(--ease-reveal) var(--reveal-delay, 0ms);
+}
+
+.js [data-reveal='hero']:not([data-revealed]) img {
+  scale: 1.03;
+}
+
+.js [data-reveal='frame']:not([data-revealed]) img {
+  scale: 1.04;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js [data-reveal] {
+    --reveal-duration: 300ms;
+  }
+
+  .js [data-reveal]:not([data-revealed]),
+  .js [data-reveal]:not([data-revealed]) img {
+    translate: none;
+    scale: none;
+  }
+}
+
+/* Page changes (main.tsx): the page content fades out over 200ms, the next
+   one fades in over 300ms. Only <main>, so the fixed nav stays put; the page
+   background is the same near-black, so nothing flashes. */
+main {
+  transition: opacity 300ms var(--ease-reveal);
+}
+
+[data-page='out'] main {
+  opacity: 0;
+  transition-duration: 200ms;
+}
+
+/* Over the hero the bar stays transparent, so a soft dark halo keeps the nav
+   text and menu icon readable over bright tunnel images. The glass makes it
+   unnecessary. */
+header:not([data-glass]) .nav-halo > a:not(.bg-primary-strong),
+header:not([data-glass]) .nav-halo > div > a:not(.bg-primary-strong) {
+  text-shadow:
+    0 0 2px #000,
+    0 0 3px #000,
+    0 0 6px #000,
+    0 0 16px rgba(0, 0, 0, 0.7);
+}
+
+header:not([data-glass]) .nav-halo > button > span {
+  filter: drop-shadow(0 0 2px #000) drop-shadow(0 0 3px #000) drop-shadow(0 0 8px rgba(0, 0, 0, 0.8));
+}
+
+/* Liquid-glass nav background: dark smoked glass, tinted from black only.
+   The base is 0.62 rather than 0.55: that is the least that keeps the links
+   at 4.5:1 even with a white image right behind the bar. */
+.nav-glass {
+  background: rgba(10, 10, 10, 0.85);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 10px 30px -14px rgba(0, 0, 0, 0.7);
+}
+
+@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+  .nav-glass {
+    background: rgba(10, 10, 10, 0.62);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.04),
+      0 10px 30px -14px rgba(0, 0, 0, 0.7);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+    backdrop-filter: blur(18px) saturate(140%);
+  }
+}
+
+/* Tools marquee: one row of the seven tools, the set twice, sliding by half
+   its width so the loop is seamless. Each slot is a seventh of the screen
+   (at least 140px), or 1/3.5 on phones (at least 110px), so one set is never
+   narrower than the screen. On desktop that alone makes a set exactly the
+   screen width, so each slot also gets a seventh of one logo's width: a set
+   is then a logo wider than the screen, and a logo's copy only comes in once
+   the logo has fully left. Transform only. */
+.tools-marquee {
+  --marquee-duration: 30s; /* phones */
+  --logo-width: 112px; /* widest logo tile: the Mobbin placeholder */
+  --slot: max(calc(100vw / 3.5), 110px);
+}
+
+@media (width >= 701px) {
+  .tools-marquee {
+    --marquee-duration: 40s;
+    --slot: calc(max(100vw / 7, 140px) + var(--logo-width) / 7);
+  }
+}
+
+.marquee-row {
+  position: relative;
+  overflow: clip;
+  /* Logos fade to nothing at the very edge */
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 15%, #000 85%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 15%, #000 85%, transparent);
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+  animation: marquee-left var(--marquee-duration) linear infinite both;
+}
+
+.marquee-slot {
+  display: flex;
+  justify-content: center;
+  width: var(--slot);
+}
+
+/* Edge layers: blur only (no fill), strongest at the edge and gone 15% in.
+   They never take the pointer, so hover and focus reach the logos. */
+.marquee-edge {
+  display: none;
+}
+
+@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+  .marquee-edge {
+    position: absolute;
+    inset-block: 0;
+    display: block;
+    width: 15%;
+    pointer-events: none;
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+  }
+
+  .marquee-edge-left {
+    left: 0;
+    -webkit-mask-image: linear-gradient(to right, #000, transparent);
+    mask-image: linear-gradient(to right, #000, transparent);
+  }
+
+  .marquee-edge-right {
+    right: 0;
+    -webkit-mask-image: linear-gradient(to left, #000, transparent);
+    mask-image: linear-gradient(to left, #000, transparent);
+  }
+}
+
+/* Paused on hover and while a logo has keyboard focus; the edge effects come
+   off while focused so the focused logo is never hidden. */
+.tools-marquee:hover .marquee-track,
+.tools-marquee:focus-within .marquee-track {
+  animation-play-state: paused;
+}
+
+.tools-marquee:focus-within .marquee-row {
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+
+.tools-marquee:focus-within .marquee-edge {
+  display: none;
+}
+
+@keyframes marquee-left {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none;
+  }
+}
